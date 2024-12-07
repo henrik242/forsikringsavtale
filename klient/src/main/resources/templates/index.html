@@ -1,0 +1,79 @@
+<html lang="no">
+    <head>
+        <meta charset="utf-8"/>
+        <title>Spring Boot Application</title>
+    </head>
+    <body>
+        <div id="opprettAvtale">
+            <h2>Opprett avtale</h2>
+            <form>
+                <label>
+                    <input type="text" name="kundeEpost" placeholder="kundes epost">
+                </label>
+                <label>
+                    <input type="text" name="avtaleNavn" placeholder="navn på avtale">
+                </label>
+                <input type="submit" value="Opprett avtale">
+            </form>
+        </div>
+        <pre id="avtale"></pre>
+        <hr>
+        <div id="visData">
+            <h2>Vis eksisterende kunder og avtaler</h2>
+            <form>
+                <input type="submit" value="Hent data">
+            </form>
+        </div>
+        <pre id="data"></pre>
+
+        <script>
+            const opprettAvtaleForm = document.getElementById("opprettAvtale").querySelector('form');
+            const avtaleDiv = document.getElementById("avtale");
+
+            function opprettAvtale() {
+                const formData = new FormData(opprettAvtaleForm);
+
+                fetch('http://localhost:8081/opprettAvtale', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        avtaleDiv.textContent = data;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        avtaleDiv.textContent = 'An error occurred. Please try again later.';
+                    });
+            }
+
+            opprettAvtaleForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                opprettAvtale();
+            });
+
+            const visDataForm = document.getElementById("visData").querySelector('form');
+            const dataDiv = document.getElementById("data");
+
+            function visData() {
+                fetch('http://localhost:8081/visData', {
+                        method: 'GET'
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        dataDiv.textContent = data;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        dataDiv.textContent = 'Noe™ gikk galt.';
+                    });
+            }
+
+            visDataForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                visData();
+            });
+
+        </script>
+    </body>
+</html>

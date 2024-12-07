@@ -1,0 +1,18 @@
+services:
+    brevtjeneste:
+        build: brevtjeneste/.
+        ports:
+            - "8083:8080"
+    fagsystem:
+        build: fagsystem/.
+        ports:
+            - "8082:8080"
+    integrasjon:
+        build: integrasjon/.
+        ports:
+            - "8081:8080"
+    klient:
+        build: klient/.
+        ports:
+            - "8080:8080"
+
